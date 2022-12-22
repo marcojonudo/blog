@@ -1,0 +1,181 @@
+@import "abstracts/mixins"
+
+\:host
+
+	#nav-container
+		width: 100%
+		height: $nav-height
+		@include flex-center
+		position: fixed
+		top: 0
+		border-radius: $border-radius $border-radius 0 0
+		color: $white
+		transition: transform $medium-transition
+
+		&.pin
+			transition: none
+
+		#nav
+			height: 100%
+			width: 100%
+			@include flex-center
+			position: relative
+			border-radius: $border-radius
+			transition: background-color $medium-transition, width $medium-transition, transform 1s
+
+			#marco-icon
+				width: $icon-side
+				height: $icon-side
+
+			#navigation
+				height: 100%
+				@include flex-1
+				display: flex
+
+				#main-button
+					@include flex-1
+					position: relative
+					overflow: hidden
+
+					& > div
+						width: 100%
+						height: 100%
+						position: absolute
+						@include flex-center
+						transition: translate $fast-transition
+
+				#main-section-buttons
+					flex: 3 0 0
+					display: flex
+
+					& > div
+						@include flex-1
+
+				#post-navigation
+					display: none
+
+			.hide
+				opacity: 0
+				pointer-events: none
+
+			#filter
+				width: 60%
+				position: absolute
+				left: 50%
+				transform: translateX(-50%)
+
+			&.stick
+				background-color: $dark-primary
+				width: 100% !important
+				border-bottom: 1px solid #38425d
+				border-radius: 0
+
+			.button
+				height: 100%
+				@include button
+
+				&.flex-1
+					@include flex-1
+
+				&::before
+					border-radius: 0
+					border-top: 0
+					border-bottom: 2px solid $white
+					transform: scale(0, 1)
+
+				&::after
+					border-left: 0
+					border-right: 0
+
+				&:hover
+
+					&::before
+						transform: scale(1)
+
+			&-title
+				height: 100%
+
+			#post-title
+				display: none
+
+			#color-selector-wrapper
+				width: $mobile-button-width
+				@include flex-center
+				position: relative
+				right: 0
+
+				#color-selector
+					height: 1.5rem
+					width: 1.5rem
+					min-width: 1.5rem
+					position: relative
+					border-radius: 50%
+					cursor: pointer
+					overflow: hidden
+					@include elevation
+
+					& > div
+						height: 100%
+						width: 100%
+						display: flex
+						position: absolute
+						transition: transform $fast-transition
+
+						& > div
+							height: 100%
+							@include flex-1
+
+							&:first-child
+								background-color: $white
+
+							&:last-child
+								background-color: $black
+
+@media (max-width: 40rem)
+
+	#nav-container
+		transition: transform $medium-transition !important
+
+@media (min-width: 40rem)
+
+	.button
+		flex: none !important
+		width: $button-width
+
+	#main-button
+		width: $button-width
+		flex: none !important
+
+	#home-icon
+		opacity: 1 !important
+		pointer-events: auto !important
+
+	#blog-icon
+		opacity: 0 !important
+		pointer-events: none !important
+
+	#post-navigation
+		height: 100%
+		position: absolute
+		left: $button-width
+		display: flex !important
+		align-items: center
+
+	#main-section-buttons
+		flex: none !important
+
+	#filter
+		width: 25% !important
+		left: auto !important
+		right: $mobile-button-width !important
+		transform: none !important
+
+@media (min-width: 75rem)
+
+	nav #post-title
+			display: block !important
+			padding-left: 2rem
+
+	#filter
+		width: 15% !important
+

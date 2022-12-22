@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="uploadComment()" [class.reply]="parent">
+	<mat-form-field appearance="outline">
+		<mat-label>Name</mat-label>
+		<input matInput formControlName="name">
+	</mat-form-field>
+	<mat-form-field appearance="outline">
+		<mat-label>Email</mat-label>
+		<input matInput formControlName="email">
+	</mat-form-field>
+	<mat-form-field appearance="outline">
+		<mat-label>Message</mat-label>
+		<textarea matInput rows="6" formControlName="message"></textarea>
+	</mat-form-field>
+	<button
+		mat-flat-button
+		type="submit"
+		[ngStyle]="translucentStyles"
+		[disabled]="!form.valid">
+		Submit comment
+	</button>
+</form>

@@ -1,0 +1,15 @@
+plugins {
+    id "com.github.node-gradle.node" version "3.5.0"
+}
+
+node {
+	download = true
+	workDir = file("${project.buildDir}/node")
+	nodeModulesDir = file("${project.projectDir}")
+}
+
+task build(type: NpmTask, dependsOn: 'npmInstall') {
+	group = 'build'
+	description = 'Compile client assets for production'
+	args = ['run', 'build:prod']
+}

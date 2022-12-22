@@ -1,0 +1,49 @@
+@import "abstracts/mixins"
+
+\:host
+	@include flex-column
+	position: relative
+	padding: $default-gap
+
+	&.reply
+		border-top: 1px solid #d4d4d4
+		padding-right: 0
+		padding-bottom: 0
+
+	&:not(.reply):after
+		content: ''
+		height: 1px
+		width: 90%
+		position: absolute
+		bottom: 0
+		background-color: #d4d4d4
+
+	header
+		@include flex-center
+		justify-content: space-between
+
+		.name
+			font-size: 1.5em
+			font-weight: bold
+
+		.name, .date
+			padding-bottom: $small-gap
+
+	.message
+		font-size: 1.1em
+
+	#reply-action-container
+		min-height: 36px
+		position: relative
+		@include flex-center
+
+		#reply-button
+			position: absolute
+			top: 0
+			padding: 0
+
+	#close-button
+		position: absolute
+		right: 0
+		z-index: 2
+		@include flex-center

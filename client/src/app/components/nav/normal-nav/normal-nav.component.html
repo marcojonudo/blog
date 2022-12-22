@@ -1,0 +1,71 @@
+<div
+	id="nav-container"
+	[class.pin]="!navService.transition"
+	[style.transform]="findNavContainerTranslate()">
+	<nav
+		id="nav"
+		[style.width.px]="navWidth"
+		[class.stick]="navService.stickNav"
+		[ngStyle]="palette.buildTranslucentStyles(navService.stickNav)">
+		<div id="navigation">
+			<div id="main-button">
+				<div
+					id="home-icon"
+					class="button"
+					[class.hide]="post"
+					(click)="selectSection(welcomeSection)">
+					<img
+						id="marco-icon"
+						title="Marco icon"
+						alt="Marco logo icon"
+						src="assets/img/marcomartinezavila-logo.svg">
+				</div>
+				<div
+					id="blog-icon"
+					class="button"
+					[class.hide]="!post"
+					(click)="navigateTo(blogUrl)">
+					<mat-icon>list</mat-icon>
+				</div>
+			</div>
+			<div id="main-section-buttons" [class.hide]="blog">
+				<div
+					class="button"
+					[ngClass]="{'selected': checkSelectedSection(aboutSection)}"
+					(click)="selectSection(aboutSection)">About</div>
+				<div
+					class="button"
+					[ngClass]="{'selected': checkSelectedSection(skillsSection)}"
+					(click)="selectSection(skillsSection)">Skills</div>
+				<div
+					class="button"
+					[ngClass]="{'selected': blog || checkSelectedSection(blogSection)}"
+					(click)="navigateTo(blogUrl)">Blog</div>
+			</div>
+			<div id="post-navigation" [class.hide]="!post">
+				<div class="button" (click)="navigateTo(blogUrl)">Blog</div>
+				<mat-icon>chevron_right</mat-icon>
+				<markdown id="post-title" [data]="findSelectedPost()?.title"></markdown>
+			</div>
+		</div>
+		<mat-form-field
+			id="filter"
+			[class.hide]="checkHideSearchBar()"
+			type="text"
+			(keyup)="search()"
+			appearance="outline">
+			<mat-label>Search</mat-label>
+			<input matInput [formControl]="filterTextControl">
+		</mat-form-field>
+		<div id="color-selector-wrapper" (click)="togglePalette()" [@inOutAnimation]>
+			<div id="color-selector">
+				<div
+					*ngFor="let palette of palettes; let i = index"
+					[style.transform]="'translateX(' + findTranslatePaletteValue(i) + '%)'">
+					<div [style.background-color]="palette.backgroundColor"></div>
+					<div [style.background-color]="palette.color"></div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>

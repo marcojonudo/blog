@@ -1,0 +1,36 @@
+version: "3.2"
+
+services:
+    portfolio-db:
+        image: mongo
+        restart: unless-stopped
+        volumes:
+            - /data/blog:/data/db
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: marco
+            MONGO_INITDB_ROOT_PASSWORD: icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC
+            MONGO_INITDB_DATABASE: blog
+        networks:
+            - portfolio-net
+        container_name: portfolio-db
+
+    portfolio:
+        image: marcojonudo/portfolio
+        restart: unless-stopped
+        ports:
+            - "8083:8090"
+        environment:
+            DB_USER: marco
+            DB_PASS: icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC
+            DB_IP: portfolio-db
+        networks:
+            - portfolio-net
+        depends_on:
+            - portfolio-db
+        container_name: portfolio
+
+networks:
+    portfolio-net:
+        driver: bridge

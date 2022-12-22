@@ -1,0 +1,31 @@
+<configuration>
+    <if condition='property("micronaut.environments").matches("prod|sta")'>
+        <then>
+            <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>logs/${micronaut.environments}/today.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <fileNamePattern>logs/${micronaut.environments}/log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                    <maxFileSize>50MB</maxFileSize>
+                    <maxHistory>30</maxHistory>
+                    <totalSizeCap>10GB</totalSizeCap>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>{"date": "%d{yyyy-MM-dd HH:mm:ss.SSS}", "thread": "%thread", "level": "%level", "logger": "%logger{36}", "message": "%msg"}%n</pattern>
+                </encoder>
+            </appender>
+            <root level="INFO">
+                <appender-ref ref="ROLLING_FILE" />
+            </root>
+        </then>
+        <else>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%yellow(%d{HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %magenta(%-36logger{36}) - %msg%n</pattern>
+                </encoder>
+            </appender>
+            <root level="INFO">
+                <appender-ref ref="STDOUT" />
+            </root>
+        </else>
+    </if>
+</configuration>

@@ -1,0 +1,54 @@
+micronaut:
+    application:
+        name: blog-api
+    server:
+        cors:
+            enabled: true
+        port: 8090
+    router:
+        static-resources:
+            default:
+                mapping: /**
+                paths: [classpath:static]
+
+endpoints:
+    beans:
+        enabled: true
+        sensitive: false
+    info:
+        enabled: true
+        sensitive: false
+    health:
+        enabled: true
+        sensitive: false
+    refresh:
+        enabled: true
+        sensitive: false
+    routes:
+        enabled: true
+        sensitive: false
+    loggers:
+        enabled: true
+        sensitive: false
+
+flyway:
+    datasources:
+        default:
+            enabled: true
+
+db:
+    port: ${DB_PORT:27017}
+    url: ${DB_IP:localhost}:${db.port}
+    credentials:
+        username: ${DB_USER:root}
+        password: ${DB_PASS:root}
+    config:
+        post:
+            name: blog
+            collection: post
+        comment:
+            name: blog
+            collection: comment
+
+mongodb:
+    uri: mongodb://${db.credentials.username}:${db.credentials.password}@${db.url}

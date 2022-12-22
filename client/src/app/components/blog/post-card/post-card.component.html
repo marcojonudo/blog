@@ -1,0 +1,15 @@
+<a (click)="selectPost()">
+	<div class="image-container">
+		<div>
+			<img
+				[src]="post.logo"
+				class="image"
+				title="Post thumbnail image"
+				[alt]="'\'' + post.title + '\' thumbnail image'">
+		</div>
+	</div>
+	<div class="content" [ngStyle]="palette.buildTextBlockStyles()">
+		<markdown class="title">{{post.title}}</markdown>
+		<div class="metadata">{{getDay() | date: 'dd/MM/yyyy'}}</div>
+	</div>
+</a>

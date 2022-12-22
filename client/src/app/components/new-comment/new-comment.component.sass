@@ -1,0 +1,17 @@
+@import "abstracts/mixins"
+
+form
+	text-align: center
+	padding: $default-gap
+
+	&:not(.reply)
+		border-bottom: 1px solid #d4d4d4
+
+	mat-form-field
+		width: 100%
+
+	button
+		box-shadow: none !important
+
+.mat-button-disabled
+	background-color: rgba(0, 0, 0, .12) !important

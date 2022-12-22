@@ -1,0 +1,41 @@
+<section id="post-wrapper">
+	<header>
+		<div class="header-image landscape" [style.background-image]="findBackgroundImage(post.headerImage)"></div>
+		<div class="header-image squared" [style.background-image]="findBackgroundImage(post.logo)"></div>
+	</header>
+	<div id="post">
+		<div id="post-header" [ngStyle]="textBlockStyles">
+			<div class="author">
+				<div class="personal-image-container">
+					<div>
+						<img
+							src="../../../../assets/img/me-portrait.webp"
+							class="personal-image fixed-image"
+							[style.border-color]="post.color"
+							title="Me portrait picture"
+							alt="Me portrait picture for post header">
+					</div>
+				</div>
+				<span>{{post.author}}</span>
+			</div>
+			<h1>
+				<markdown>{{post.title}}</markdown>
+			</h1>
+			<div class="date" [style.color]="post.color">{{getDay() | date: 'dd/MM/yyyy'}}</div>
+		</div>
+		<div id="post-content" [ngStyle]="textBlockStyles">
+			<markdown emoji [data]="post.content"></markdown>
+		</div>
+	</div>
+	<div id="new-comment-container" [ngStyle]="textBlockStyles">
+		<app-new-comment [postPath]="post.path" [translucentStyles]="translucentStyles"></app-new-comment>
+	</div>
+	<div id="comments-container" [ngStyle]="textBlockStyles">
+		<app-comment
+			*ngFor="let comment of parents"
+			[post]="post"
+			[comment]="comment"
+			[translucentStyles]="translucentStyles">
+		</app-comment>
+	</div>
+</section>

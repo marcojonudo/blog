@@ -1,0 +1,39 @@
+@import "src/styles/abstracts/mixins"
+
+\:host
+	position: relative
+	@include flex-column
+
+	.section-title-link
+
+		&::before
+			content: ''
+			position: absolute
+			top: 0
+			left: 0
+			right: 0
+			bottom: 0
+			opacity: 0
+			transition: opacity $fast-transition, transform $fast-transition
+			border-bottom: 1px solid $white
+			transform: scale(0, 1)
+
+		&:hover
+
+			&::before
+				opacity: 1
+				transform: scale(1)
+
+	#posts-container
+		display: grid
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+		grid-gap: 1.5rem
+		padding-bottom: $medium-gap
+
+@media (min-width: 75rem)
+
+	\:host
+		padding: 0 $bigger-gap
+
+	#posts-container
+		grid-template-columns: repeat(4, 1fr) !important

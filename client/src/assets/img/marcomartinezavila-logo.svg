@@ -1,0 +1,61 @@
+<svg viewBox="0 0 48.40406 48.40406" xmlns="http://www.w3.org/2000/svg">
+	<g transform="translate(-10.79797,-10.79797)">
+		<circle fill="#fff" cx="35" cy="35" r="24.20203" />
+		<path
+			stroke="#000072"
+			stroke-linecap="round"
+			stroke-width="5"
+			d="M 16.032461,47.394077 27.591367,22.605923"/>
+		<path
+			stroke="#000072"
+			stroke-linecap="round"
+			stroke-width="5"
+			d="M 30.527539,28.909537 27.587004,22.605923"/>
+		<g transform="translate(-0.79375001,-0.42994792)">
+			<path
+				stroke="#000072"
+				stroke-linecap="round"
+				stroke-width="1"
+				d="M 20.501636,48.1282 28.423112,31.140547"/>
+			<path
+				stroke="#000072"
+				stroke-linecap="round"
+				stroke-width="1"
+				d="M 29.566334,33.586033 28.425988,31.140547"/>
+		</g>
+		<path
+			stroke="#000072"
+			stroke-linecap="round"
+			stroke-width="5"
+			d="M 53.967537,47.394077 42.408631,22.605923"/>
+		<path
+			stroke="#000072"
+			stroke-linecap="round"
+			stroke-width="5"
+			d="m 39.472459,28.909537 2.940535,-6.303614"/>
+		<g transform="translate(2.0505209,-2.2820309)">
+			<path
+				stroke="#000072"
+				stroke-linecap="round"
+				stroke-width="1"
+				d="M 48.241591,49.980283 40.320115,32.99263"/>
+			<path
+				stroke="#000072"
+				stroke-linecap="round"
+				stroke-width="1"
+				d="M 39.176893,35.438116 40.317239,32.99263"/>
+		</g>
+		<g transform="translate(-33.950668,-31.497425)">
+			<path
+				stroke="#000072"
+				stroke-linecap="round"
+				stroke-width="3"
+				d="m 66.681129,67.281562 2.265142,-4.857617"/>
+			<path
+				stroke="#000072"
+				stroke-linecap="round"
+				stroke-width="3"
+				d="M 71.265916,67.281562 69.000774,62.423945"/>
+		</g>
+	</g>
+</svg>

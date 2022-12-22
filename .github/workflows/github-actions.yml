@@ -1,0 +1,49 @@
+name: Generate app
+on: [push]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout project sources
+              uses: actions/checkout@v3
+
+            - uses: actions/cache@v3
+              with:
+                path: server/build/libs
+                key: resources
+
+            - name: Setup Gradle
+              uses: gradle/gradle-build-action@v2
+
+            - name: Run custom generate task with Gradle Wrapper
+              run: ./gradlew generateCompleteJar
+
+    build-and-push-docker-image:
+        needs: build
+        name: Build Docker image and push to DockerHub
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - uses: actions/cache@v3
+              with:
+                path: server/build/libs
+                key: resources
+
+            - name: Set up Docker Buildx
+              id: buildx
+              uses: docker/setup-buildx-action@v2
+
+            - name: Login to DockerHub
+              uses: docker/login-action@v2
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Build image and push to DockerHub
+              uses: docker/build-push-action@v2
+              with:
+                context: ./server
+                push: true
+                tags: marcojonudo/portfolio:latest
