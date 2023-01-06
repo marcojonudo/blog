@@ -26,7 +26,6 @@ export class NavService {
 			map(e => e.urlAfterRedirects),
 			map(url => url.split('/')),
 			map(paths => paths[paths.length - 1]),
-			tap(p => console.log('path', p)),
 			tap(p => p === 'blog' ? this.handleBlogUpdate(router).subscribe() : undefined)
 		);
 		this.blogService.createIsPostObservable(this.path$);

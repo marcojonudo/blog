@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../objects/blog/post';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { Url } from '../utils/url';
 import { Comment } from '../objects/blog/comment';
 import { Utils } from '../utils/utils';
 import { MetaService } from './meta.service';
 import { Title } from '@angular/platform-browser';
+import { Constants } from '../utils/constants';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,7 +19,6 @@ export class BlogService {
 	posts$: Observable<Post[]>;
 	isPost$: Observable<boolean>;
 	post$: Observable<Post>;
-	filterTextSubject: BehaviorSubject<string>; // TODO
 	commentsSubject: Subject<Comment>;
 	comments$: Observable<Comment>;
 
@@ -32,15 +32,19 @@ export class BlogService {
 		this.comments$ = this.commentsSubject.asObservable();
 	}
 
+	checkIsBlog(path: string, blogId: string = Constants.BLOG): boolean {
+		return path === blogId;
+	}
+
 	createIsPostObservable(path$: Observable<string>): void {
 		this.isPost$ = path$.pipe(
-			map(path => path !== 'blog')
+			map(path => !(this.checkIsBlog(path)))
 		);
 	}
 
 	createPostObservable(path$: Observable<string>): void {
 		this.post$ = path$.pipe(
-			filter(path => path !== 'blog'),
+			filter(path => !(this.checkIsBlog(path))),
 			concatMap((path: string) => this.findPost(path)),
 			map((post: any) => new Post(post)),
 			tap(post => this.findUpdateMetaObservable(post).subscribe())
@@ -68,10 +72,6 @@ export class BlogService {
 			map(post => new Post(post)),
 			tap(post => console.log('Post', post))
 		);
-	}
-
-	search(text: string): void {
-		this.filterTextSubject.next(text);
 	}
 
 	findComments(postPath: string): Observable<any> {

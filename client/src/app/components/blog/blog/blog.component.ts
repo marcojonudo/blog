@@ -13,7 +13,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 	styleUrls: ['./blog.component.sass'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BlogComponent implements OnInit {
+export class BlogComponent {
 
 	posts: Post[];
 	posts$: Observable<Post[]>;
@@ -21,20 +21,12 @@ export class BlogComponent implements OnInit {
 
 	constructor(
 		public blogService: BlogService,
-		private navService: NavService,
-		private aestheticsService: AestheticsService,
-		private cdRef: ChangeDetectorRef
+		public aestheticsService: AestheticsService,
+		private navService: NavService
 	) {
 		this.posts$ = this.navService.searchInput$.pipe(
 			switchMap(text => this.findPostsObservable(text))
 		);
-	}
-
-	ngOnInit(): void {
-		this.aestheticsService.palette$.subscribe(palette => { // TODO
-			this.palette = palette;
-			this.cdRef.detectChanges();
-		});
 	}
 
 	findPostsObservable(filterText: string, localPosts: Post[] = this.posts): Observable<Post[]> {

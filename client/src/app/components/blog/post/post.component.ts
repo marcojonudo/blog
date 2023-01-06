@@ -53,9 +53,9 @@ export class PostComponent implements OnInit, OnDestroy {
 
 	constructor(
 		public blogService: BlogService,
+		public aestheticsService: AestheticsService,
 		private navService: NavService,
 		private router: Router,
-		private aestheticsService: AestheticsService,
 		private meta: Meta,
 		private cdRef: ChangeDetectorRef
 	) {

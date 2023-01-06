@@ -24,7 +24,6 @@ export class AestheticsService {
 
 	findSelectedIndex(palette: Palette = this.palette, palettes: Palette[] = this.palettes): number {
 		return palettes.indexOf(palette);
-
 	}
 
 	togglePalette(palettes: Palette[] = this.palettes): void {

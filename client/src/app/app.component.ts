@@ -2,7 +2,6 @@ import {
 	ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding
 } from '@angular/core';
 import { NavService } from './services/nav.service';
-import { Device } from './objects/device/device';
 import { Constants } from './utils/constants';
 import { AestheticsService } from './services/aesthetics.service';
 import { Palette } from './objects/palette/palette';
