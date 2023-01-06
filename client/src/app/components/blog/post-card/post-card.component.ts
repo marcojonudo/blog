@@ -23,7 +23,6 @@ export class PostCardComponent {
 	}
 
 	selectPost(): void {
-		this.blogService.selectPost(this.post);
 		this.router.navigate(['/blog', this.post.path]);
 	}
 

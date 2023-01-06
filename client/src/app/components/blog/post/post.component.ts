@@ -1,66 +1,83 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BlogService } from '../../../services/blog.service';
 import { Post } from '../../../objects/blog/post';
-import { tap } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { Dayjs } from 'dayjs';
 import { Constants } from '../../../utils/constants';
 import { AestheticsService } from '../../../services/aesthetics.service';
 import { Comment } from '../../../objects/blog/comment';
 import { Meta } from '@angular/platform-browser';
+import { NavService } from '../../../services/nav.service';
+import { Router } from '@angular/router';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
 	selector: 'app-post',
 	templateUrl: './post.component.html',
 	styleUrls: ['./post.component.sass'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [
+		trigger('inOutAnimation', [
+			transition(
+				':enter',
+				[
+					style({ opacity: 0 }),
+					animate('.1s', style({ opacity: 1 }))
+				]
+			),
+			transition(
+				':leave',
+				[
+					style({ opacity: 1 }),
+					animate('.5s', style({ opacity: 0 }))
+				]
+			)
+		])
+	]
 })
-export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PostComponent implements OnInit, OnDestroy {
 
 	private readonly FIXED_IMAGE = 'fixed-image';
 
 	@HostBinding(`style.${Constants.PROPERTY.BACKGROUND_IMAGE}`) backgroundImage: string;
 
-	postSubscription: Subscription;
 	post: Post;
+	post$: Observable<Post>;
+	post2$: Observable<any>;
+	showSpinner = true;
+	paletteSubscription: Subscription;
 	parents: Comment[];
 	translucentStyles: any;
 	textBlockStyles: any;
 
 	constructor(
-		private blogService: BlogService,
+		public blogService: BlogService,
+		private navService: NavService,
+		private router: Router,
 		private aestheticsService: AestheticsService,
 		private meta: Meta,
 		private cdRef: ChangeDetectorRef
 	) {
-		this.postSubscription = this.findContent().subscribe(post => {
-			this.post = post;
-		});
-		this.blogService.findComments(this.post.path).subscribe(() => {
-			this.parents = this.buildGroupedComments();
-			this.cdRef.detectChanges();
-		});
-		this.blogService.comments$.subscribe(() => {
-			this.parents = this.buildGroupedComments();
-			this.cdRef.detectChanges();
-		});
+		this.showSpinner = true;
+		this.blogService.post$.pipe(
+			tap(post => this.post = post),
+			delay(1000),
+			tap(() => this.showSpinner = false),
+			tap(() => this.cdRef.detectChanges())
+		).subscribe();
 	}
 
 	ngOnInit(): void {
-		this.aestheticsService.palette$.subscribe(palette => {
+		this.paletteSubscription = this.aestheticsService.palette$.subscribe(palette => {
 			this.translucentStyles = palette.buildTranslucentStyles();
 			this.textBlockStyles = palette.buildTextBlockStyles();
 			this.cdRef.detectChanges();
 		});
 	}
 
-	ngAfterViewInit(): void {
-		this.setParagraphStyle(Array.from(document.getElementsByTagName('p')));
-		this.setImagesWidth(Array.from(document.images));
-	}
-
 	ngOnDestroy(): void {
-		this.postSubscription.unsubscribe();
+		this.paletteSubscription.unsubscribe();
 	}
 
 	findBackgroundImage(url: string): string {
@@ -68,17 +85,7 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	buildGroupedComments(): Comment[] {
-		const parents = this.blogService.groupComments();
-		console.log('Grouped comments', parents);
-		return parents;
-	}
-
-	setParagraphStyle(paragraphs: any[]): void {
-		paragraphs.forEach(paragraph => {
-			if (paragraph.children.length === 1 && paragraph.children[0]['alt']) {
-				paragraph.className = 'image-paragraph';
-			}
-		});
+		return this.blogService.groupComments();
 	}
 
 	setImagesWidth(images: HTMLImageElement[]): void {
@@ -91,13 +98,7 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	findContent(): Observable<Post> {
-		return this.blogService.post$.pipe(
-			tap(post => console.log('Post', post))
-		);
-	}
-
-	getDay(date: Dayjs = this.post.date): Date {
+	getDay(date: Dayjs): Date {
 		return date.toDate();
 	}
 

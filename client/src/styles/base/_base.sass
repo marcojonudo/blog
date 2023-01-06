@@ -35,53 +35,6 @@ body
 	background-color: rgba(0, 0, 0, .6)
 	border-radius: .2rem
 
-.link-container
-	display: flex
-	align-items: center
-	justify-content: space-around
-
-	> *
-		width: 6.5rem
-		height: 3rem
-		position: relative
-		display: flex
-		align-items: center
-		justify-content: center
-		margin: 0 .5rem
-		border-radius: .2rem
-		cursor: pointer
-
-		&::before, &::after
-			content: ''
-			position: absolute
-			top: 0
-			left: 0
-			right: 0
-			bottom: 0
-			border-radius: .2rem
-			opacity: 0
-			transition: opacity .3s, transform .3s
-
-		&::before
-			border-top: 2px solid #fff
-			border-bottom: 2px solid #fff
-			transform: scale(0, 1)
-
-		&::after
-			border-left: 2px solid #fff
-			border-right: 2px solid #fff
-			transform: scale(1, 0)
-
-		&:hover
-
-			&::before, &::after
-				opacity: 1
-				transform: scale(1)
-
-		&.selected::before, &.selected::after
-			opacity: 1
-			transform: scale(1)
-
 .section-title
 	position: relative
 	@include flex-center
@@ -116,7 +69,7 @@ body
 		line-height: 1.8
 
 	img
-		width: 80%
+		//width: 80%
 		margin: 0 auto
 
 	h1
@@ -127,26 +80,34 @@ body
 		font-size: 1.6em
 		margin-top: $medium-gap
 
-.mat-form-field-wrapper
-	margin-bottom: -1.25em
-	padding-bottom: 0 !important
+#nav
 
-.mat-form-field-flex > .mat-form-field-infix
-	padding: 0.4em 0 !important
+	.mat-mdc-text-field-wrapper, .mat-mdc-form-field-flex, .mdc-floating-label, .mat-mdc-input-element
+		height: 100% !important
 
-.mat-form-field-label-wrapper
-	top: -1.5em
+	.mat-mdc-form-field-subscript-wrapper
+		display: none
 
-.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
-	transform: translateY(-1.1em) scale(.75)
-	width: 133.33333%
+	.mat-mdc-form-field-infix
+		min-height: 0 !important
+		height: 100% !important
+		padding: 0 !important
+
+	.mdc-floating-label, .mat-mdc-input-element
+		color: $light-grey !important
+
+	.mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing
+		border-color: $light-grey !important
+
+	.mat-mdc-input-element
+		caret-color: $light-grey !important
 
 #nav-container
 
-	.mat-focused .mat-form-field-label, .mat-form-field-label
+	.mat-focused .mat-mdc-form-field-label, .mat-mdc-form-field-label
 		color: $light-grey !important
 
-	.mat-form-field-outline
+	.mat-mdc-form-field-outline
 		color: $light-grey !important
 
 .personal-image-container
@@ -175,6 +136,36 @@ code
 #post ol, ul
 	list-style: disc !important
 	padding-left: 1.5rem !important
+
+p > img
+	@include flex-center
+
+img[alt="20_width_image"]
+	width: 20%
+
+img[alt="30_width_image"]
+	width: 30%
+
+img[alt="40_width_image"]
+	width: 40%
+
+img[alt="50_width_image"]
+	width: 50%
+
+img[alt="60_width_image"]
+	width: 60%
+
+img[alt="70_width_image"]
+	width: 70%
+
+img[alt="80_width_image"]
+	width: 80%
+
+img[alt="90_width_image"]
+	width: 90%
+
+img[alt="100_width_image"]
+	width: 100%
 
 @media (max-width: 650px)
 

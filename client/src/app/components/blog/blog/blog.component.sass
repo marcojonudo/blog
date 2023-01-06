@@ -4,7 +4,7 @@
 	height: 100%
 	@include flex-column
 	box-sizing: border-box
-	padding: 5rem 1.5rem $default-gap
+	padding: $medium-gap 1.5rem $default-gap
 	overflow-y: auto
 
 	#posts-container
@@ -16,7 +16,7 @@
 @media (min-width: 75rem)
 
 	\:host
-		padding: 5rem $bigger-gap $default-gap
+		padding: $medium-gap $bigger-gap $default-gap
 
 	#posts-container
 		grid-template-columns: repeat(4, 1fr) !important

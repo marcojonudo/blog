@@ -1,55 +1,51 @@
 @import "abstracts/mixins"
 
 \:host
-	height: 100%
+	@include flex-1
 	@include flex-column
 	box-sizing: border-box
-	padding-top: $nav-height
 
-	#post-wrapper
-		height: 100%
+	header
+		position: relative
+		background-color: $white
 
-		header
-			position: relative
-			background-color: $white
+		.header-image
+			width: 100%
+			background-repeat: no-repeat
+			background-size: cover
+			background-position: center
+			padding-top: 100%
 
-			.header-image
-				width: 100%
-				background-repeat: no-repeat
-				background-size: cover
-				background-position: center
-				padding-top: 100%
+			&.landscape
+				display: none
 
-				&.landscape
-					display: none
+	#post
 
-		#post
+		&-header
+			@include flex-column-center
+			padding: 1rem
+			background-image: url('/assets/img/post-title-background.svg')
 
-			&-header
+			.author
 				@include flex-column-center
-				padding: 1rem
-				background-image: url('/assets/img/post-title-background.svg')
+				font-weight: bold
 
-				.author
-					@include flex-column-center
-					font-weight: bold
+				.personal-image-container
+					width: 125px
 
-					.personal-image-container
-						width: 125px
+					.personal-image
+						border: 5px solid $black-alpha
 
-						.personal-image
-							border: 5px solid $black-alpha
+			h1
+				text-align: center
 
-				h1
-					text-align: center
+			.date
+				font-size: .8em
+				color: $dark-grey
 
-				.date
-					font-size: .8em
-					color: $dark-grey
-
-			&-content
-				padding: 1rem
-				background-color: $white
+		&-content
+			padding: 1rem
+			background-color: $white
 
 @media (min-width: 40rem)
 
@@ -67,7 +63,7 @@
 
 @media (min-width: 75rem)
 
-	#post-wrapper
+	\:host
 		overflow-y: auto
 
 		.header-image

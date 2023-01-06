@@ -6,6 +6,10 @@ export class Url {
 		return `${environment.serverUrl}/posts`;
 	}
 
+	static post(path: string): string {
+		return `${environment.serverUrl}/posts/${path}`;
+	}
+
 	static comments(): string {
 		return `${environment.serverUrl}/comments`;
 	}

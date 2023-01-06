@@ -1,0 +1,41 @@
+<nav id="nav" [ngStyle]="palette.buildTranslucentStyles(true)">
+	<div id="navigation" [class.post]="blogService.isPost$ | async">
+		<div id="main-button">
+			<div id="home-icon" class="button main-button">
+				<img
+					class="icon"
+					title="Marco icon"
+					alt="Marco logo icon"
+					src="../../../assets/img/marcomartinezavila-logo.svg">
+			</div>
+			<div
+				id="blog-icon"
+				class="button main-button"
+				(click)="navigateTo(blogUrl)">
+				<mat-icon>list</mat-icon>
+			</div>
+		</div>
+		<div id="post-navigation">
+			<div class="button" (click)="navigateTo(blogUrl)">Blog</div>
+			<mat-icon>chevron_right</mat-icon>
+			<markdown *ngIf="blogService.post$ | async as post" id="post-title" [data]="post.title"></markdown>
+		</div>
+		<mat-form-field
+			id="filter"
+			type="text"
+			appearance="outline">
+			<mat-label>Search</mat-label>
+			<input matInput [formControl]="filterTextControl">
+		</mat-form-field>
+	</div>
+	<div id="color-selector-wrapper" (click)="togglePalette()" [@inOutAnimation]>
+		<div id="color-selector">
+			<div
+				*ngFor="let palette of palettes; let i = index"
+				[style.transform]="'translateX(' + findTranslatePaletteValue(i) + '%)'">
+				<div [style.background-color]="palette.backgroundColor"></div>
+				<div [style.background-color]="palette.color"></div>
+			</div>
+		</div>
+	</div>
+</nav>

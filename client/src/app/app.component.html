@@ -1,6 +1,2 @@
+<app-nav [palette]="palette"></app-nav>
 <router-outlet></router-outlet>
-<app-normal-nav *ngIf="checkUser(normalUser); else devUserTemplate" [palette]="palette"></app-normal-nav>
-<ng-template #devUserTemplate>
-	<app-style-editor appDraggable [palette]="palette"></app-style-editor>
-</ng-template>
-<app-splash-screen [@leaveAnimation] *ngIf="showSplash"></app-splash-screen>

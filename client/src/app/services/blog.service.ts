@@ -1,69 +1,77 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../objects/blog/post';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { Url } from '../utils/url';
-import { LocalStorageService } from './local-storage.service';
 import { Comment } from '../objects/blog/comment';
+import { Utils } from '../utils/utils';
+import { MetaService } from './meta.service';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class BlogService {
 
-	posts: Post[];
-	post: Post;
 	comments: Comment[];
-	postsSubject: BehaviorSubject<Post[]>;
 	posts$: Observable<Post[]>;
-	postSubject: BehaviorSubject<Post>;
+	isPost$: Observable<boolean>;
 	post$: Observable<Post>;
-	filterTextSubject: BehaviorSubject<string>;
-	filterText$: Observable<string>;
+	filterTextSubject: BehaviorSubject<string>; // TODO
 	commentsSubject: Subject<Comment>;
 	comments$: Observable<Comment>;
 
-	constructor(private http: HttpClient) {
-		const post = LocalStorageService.getItem('post');
-		this.post = post ? new Post(post) : undefined;
-		this.findPosts().subscribe((data: any[]) => {
-			this.posts = data.map(p => new Post(p));
-			this.postsSubject.next(this.posts);
-		});
-		this.postsSubject = new BehaviorSubject<Post[]>([]);
-		this.posts$ = this.postsSubject.asObservable();
-		this.postSubject = new BehaviorSubject<Post>(this.post);
-		this.post$ = this.postSubject.asObservable();
-		this.filterTextSubject = new BehaviorSubject<string>(undefined);
-		this.filterText$ = this.filterTextSubject.asObservable();
+	constructor(
+		private http: HttpClient,
+		private titleService: Title,
+		private metaService: MetaService
+	) {
+		this.createPostsObservable();
 		this.commentsSubject = new Subject<Comment>();
 		this.comments$ = this.commentsSubject.asObservable();
 	}
 
-	findPosts(): Observable<Post[]> {
-		return this.http.get(Url.posts()).pipe(
-			map((posts: any[]) =>
-				posts.map(post => new Post(post)).sort((a, b) => {
-					if (a.date.isBefore(b.date)) { return 1; }
-					if (a.date.isAfter(b.date)) { return -1; }
-					return 0;
-				})
-			),
-			tap(posts => {
-				console.log('Posts', posts);
-			})
+	createIsPostObservable(path$: Observable<string>): void {
+		this.isPost$ = path$.pipe(
+			map(path => path !== 'blog')
+		);
+	}
+
+	createPostObservable(path$: Observable<string>): void {
+		this.post$ = path$.pipe(
+			filter(path => path !== 'blog'),
+			concatMap((path: string) => this.findPost(path)),
+			map((post: any) => new Post(post)),
+			tap(post => this.findUpdateMetaObservable(post).subscribe())
+		);
+	}
+
+	createPostsObservable(): void {
+		this.posts$ = this.http.get(Url.posts()).pipe(
+			map((posts: any[]) => posts.map(post => new Post(post))),
+			map((posts: Post[]) => Utils.sortPosts(posts)),
+			tap(posts => console.log('Posts', posts))
+		);
+	}
+
+	findUpdateMetaObservable(post: Post): Observable<any> {
+		return of(post).pipe(
+			tap(p => this.titleService.setTitle(p.title)),
+			map(p => this.metaService.findPostProperties(p)),
+			tap(d => this.metaService.addTags(d))
+		);
+	}
+
+	findPost(path: string): Observable<Post> {
+		return this.http.get(Url.post(path)).pipe(
+			map(post => new Post(post)),
+			tap(post => console.log('Post', post))
 		);
 	}
 
 	search(text: string): void {
 		this.filterTextSubject.next(text);
-	}
-
-	selectPost(post: Post): void {
-		this.post = post;
-		LocalStorageService.setItem('post', this.post);
-		this.postSubject.next(this.post);
 	}
 
 	findComments(postPath: string): Observable<any> {

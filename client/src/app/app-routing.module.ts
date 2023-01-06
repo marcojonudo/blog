@@ -1,16 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home/home.component';
 
 const routes: Routes = [
-	{
-		path: 'home',
-		data: {
-			title: 'Marco - Freelance software developer',
-			description: 'I\'m Marco, an experienced full stack developer who provides professional and top quality software development services!'
-		},
-		component: HomeComponent
-	},
 	{
 		path: 'blog',
 		data: {
@@ -19,13 +10,11 @@ const routes: Routes = [
 		},
 		loadChildren: () => import('./components/blog/blog.module').then(m => m.BlogModule)
 	},
-	{ path: '**', pathMatch: 'full', redirectTo: 'home' }
+	{ path: '**', pathMatch: 'full', redirectTo: 'blog' }
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
-})],
+	imports: [RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' })],
 	exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -1,4 +1,4 @@
-<section id="post-wrapper">
+<section id="post-wrapper" *ngIf="post && !showSpinner">
 	<header>
 		<div class="header-image landscape" [style.background-image]="findBackgroundImage(post.headerImage)"></div>
 		<div class="header-image squared" [style.background-image]="findBackgroundImage(post.logo)"></div>
@@ -21,7 +21,7 @@
 			<h1>
 				<markdown>{{post.title}}</markdown>
 			</h1>
-			<div class="date" [style.color]="post.color">{{getDay() | date: 'dd/MM/yyyy'}}</div>
+			<div class="date" [style.color]="post.color">{{getDay(post.date) | date: 'dd/MM/yyyy'}}</div>
 		</div>
 		<div id="post-content" [ngStyle]="textBlockStyles">
 			<markdown emoji [data]="post.content"></markdown>
@@ -39,3 +39,4 @@
 		</app-comment>
 	</div>
 </section>
+<app-spinner *ngIf="showSpinner" [@inOutAnimation]></app-spinner>

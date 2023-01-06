@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { NavService } from '../../../services/nav.service';
 import { Post } from '../../../objects/blog/post';
 import { BlogService } from '../../../services/blog.service';
-import { concatMap, switchMap } from 'rxjs/operators';
 import { AestheticsService } from '../../../services/aesthetics.service';
 import { Palette } from '../../../objects/palette/palette';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-blog',
@@ -15,32 +16,32 @@ import { Palette } from '../../../objects/palette/palette';
 export class BlogComponent implements OnInit {
 
 	posts: Post[];
-	filterText: string;
+	posts$: Observable<Post[]>;
 	palette: Palette;
 
 	constructor(
+		public blogService: BlogService,
 		private navService: NavService,
-		private blogService: BlogService,
 		private aestheticsService: AestheticsService,
 		private cdRef: ChangeDetectorRef
 	) {
-		this.posts = [];
+		this.posts$ = this.navService.searchInput$.pipe(
+			switchMap(text => this.findPostsObservable(text))
+		);
 	}
 
 	ngOnInit(): void {
-		this.aestheticsService.palette$.subscribe(palette => {
+		this.aestheticsService.palette$.subscribe(palette => { // TODO
 			this.palette = palette;
 			this.cdRef.detectChanges();
 		});
-		this.blogService.posts$.pipe(
-			switchMap(posts => {
-				this.posts = posts;
-				return this.blogService.filterText$;
-			})
-		).subscribe(filterText => {
-			this.filterText = filterText;
-			this.cdRef.detectChanges();
-		});
+	}
+
+	findPostsObservable(filterText: string, localPosts: Post[] = this.posts): Observable<Post[]> {
+		return (localPosts ? of(localPosts) : this.blogService.posts$).pipe(
+			tap(posts => this.posts = this.posts ?? posts),
+			map(posts => posts.filter(p => p.title.toLowerCase().includes(filterText.toLowerCase())))
+		);
 	}
 
 }

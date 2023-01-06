@@ -21,14 +21,23 @@ export class MetaService {
 
 	constructor(private meta: Meta) {}
 
-	findProperties(post: Post, data: any, mePictureUrl: string = Constants.ME_PICTURE_URL): MetaProperties {
-		console.log(post, data, mePictureUrl);
+	findBlogProperties(data: any, mePictureUrl: string = Constants.ME_PICTURE_URL): MetaProperties {
 		return {
-			type: post ? 'article' : 'website',
-			title: post ? Utils.buildPostTitle(post.title) : data.title,
-			description: post?.findDescription() ?? data.description,
-			url: post ? Utils.buildPostUrl(post.path) : data.url,
-			image: post?.headerImage ?? mePictureUrl
+			type: 'website',
+			title: data.title,
+			description: data.description,
+			url: Utils.buildBlogUrl(),
+			image: mePictureUrl
+		};
+	}
+
+	findPostProperties(post: Post): MetaProperties {
+		return {
+			type: 'article',
+			title: Utils.buildPostTitle(post.title),
+			description: post.findDescription(),
+			url: Utils.buildPostUrl(post.path),
+			image: post.headerImage
 		};
 	}
 

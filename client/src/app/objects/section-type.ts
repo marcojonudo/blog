@@ -5,14 +5,6 @@ export class SectionType {
 
 	private static all: { [name: string]: SectionType } = {};
 
-	static readonly HOME = new SectionType(
-		'HOME',
-		(url: string) => !url.includes(Constants.URL.BLOG),
-		false,
-		false,
-		(routeTitle: string) => routeTitle,
-		(cdRef: ChangeDetectorRef) => undefined
-	);
 	static readonly BLOG = new SectionType(
 		'BLOG',
 		(url: string) => url === Constants.URL.BLOG,
