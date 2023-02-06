@@ -9,7 +9,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostComponent } from './components/blog/post/post.component';
 import { MarkdownModule } from 'ngx-markdown';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TitlePipe } from './pipes/title.pipe';
 import { NavComponent } from './components/nav/nav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +26,7 @@ import * as timezone from 'dayjs/plugin/timezone';
 import { MatIconModule } from '@angular/material/icon';
 import { DateSortPipe } from './pipes/date-sort.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { TransferHttpInterceptor } from './interceptors/transfer-http.interceptor';
 
 @NgModule({
 	declarations: [
@@ -56,7 +57,13 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 		MatButtonModule,
 		MatIconModule
 	],
-	providers: [],
+	providers: [
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: TransferHttpInterceptor,
+			multi: true
+		}
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

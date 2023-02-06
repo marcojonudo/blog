@@ -24,8 +24,8 @@ export class MetaService {
 	findBlogProperties(data: any, mePictureUrl: string = Constants.ME_PICTURE_URL): MetaProperties {
 		return {
 			type: 'website',
-			title: data.title,
-			description: data.description,
+			title: data.title.replace(/[`*]/g, ''),
+			description: data.description.replace(/[`*]/g, ''),
 			url: Utils.buildBlogUrl(),
 			image: mePictureUrl
 		};

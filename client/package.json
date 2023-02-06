@@ -1,5 +1,5 @@
 {
-	"name": "portfolio",
+	"name": "blog",
 	"version": "0.0.0",
 	"scripts": {
 		"ng": "ng",
@@ -10,10 +10,11 @@
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
-		"dev:ssr": "ng run portfolio:serve-ssr",
-		"serve:ssr": "node dist/portfolio/server/main.js",
-		"build:ssr": "ng build && ng run portfolio:server",
-		"prerender": "ng run portfolio:prerender"
+		"dev:ssr": "ng run blog:serve-ssr",
+		"serve:ssr": "node dist/blog/server/main.js",
+		"build:ssr": "ng build && ng run blog:server",
+		"prerender": "ng run blog:prerender",
+		"build:run:prod": "ng build --configuration production && ng run blog:server"
 	},
 	"private": true,
 	"dependencies": {

@@ -1,7 +1,7 @@
 version: "3.2"
 
 services:
-    portfolio-db:
+    blog-db:
         image: mongo
         restart: unless-stopped
         volumes:
@@ -13,24 +13,39 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC
             MONGO_INITDB_DATABASE: blog
         networks:
-            - portfolio-net
-        container_name: portfolio-db
+            - blog-net
+        container_name: blog-db
 
-    portfolio:
-        image: marcojonudo/portfolio
+    blog-api:
+        image: marcojonudo/blog-api
         restart: unless-stopped
-        ports:
-            - "8083:8090"
+#        ports:
+#            - 8090:8090
         environment:
             DB_USER: marco
             DB_PASS: icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC
-            DB_IP: portfolio-db
+            DB_IP: blog-db
         networks:
-            - portfolio-net
+            - blog-net
         depends_on:
-            - portfolio-db
-        container_name: portfolio
+            - blog-db
+        container_name: blog-api
+
+    blog:
+        image: marcojonudo/blog
+        restart: unless-stopped
+        ports:
+            - 4000:4000
+#        environment:
+#            DB_USER: marco
+#            DB_PASS: icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC
+#            DB_IP: blog-db
+        networks:
+            - blog-net
+        depends_on:
+            - blog-api
+        container_name: blog
 
 networks:
-    portfolio-net:
+    blog-net:
         driver: bridge

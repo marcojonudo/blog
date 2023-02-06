@@ -36,7 +36,7 @@ export class NavService {
 		return of(router.routerState.root).pipe(
 			map(r => this.findRouteChild(r)),
 			tap(r => this.titleService.setTitle(r.snapshot.data.title)),
-			map(r => this.metaService.findBlogProperties(r)),
+			map(r => this.metaService.findBlogProperties(r.snapshot.data)),
 			tap(d => this.metaService.addTags(d))
 		);
 	}

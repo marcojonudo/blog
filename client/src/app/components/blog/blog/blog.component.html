@@ -1,4 +1,4 @@
-<div id="posts-container">
+<div id="posts-container" [@inOutAnimation]>
 	<app-post-card
 		*ngFor="let post of posts$ | async"
 		[post]="post"

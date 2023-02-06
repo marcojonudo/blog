@@ -3,77 +3,77 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"portfolio": {
-            "projectType": "application",
-            "schematics": {
-                "@schematics/angular:component": {
-                    "style": "sass"
-                }
-            },
-            "root": "",
-            "sourceRoot": "src",
-            "prefix": "app",
-            "architect": {
-                "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
-                    "options": {
-                        "outputPath": "dist/portfolio/browser",
-                        "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "tsconfig.app.json",
-                        "aot": true,
-                        "assets": [
-                            "src/favicon.ico",
+		"blog": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "sass"
+				}
+			},
+			"root": "",
+			"sourceRoot": "src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/blog/browser",
+						"index": "src/index.html",
+						"main": "src/main.ts",
+						"polyfills": "src/polyfills.ts",
+						"tsConfig": "tsconfig.app.json",
+						"aot": true,
+						"assets": [
+							"src/favicon.ico",
 							"src/robots.txt",
 							"src/sitemap.xml",
 							"src/assets"
 						],
-                        "styles": [
-                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+						"styles": [
+							"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
 							"src/styles/main.sass",
 							"node_modules/prismjs/themes/prism-okaidia.css"
-                        ],
-                        "stylePreprocessorOptions": {
-                            "includePaths": [
-                                "src/styles"
-                            ]
-                        },
-                        "scripts": [
+						],
+						"stylePreprocessorOptions": {
+							"includePaths": [
+								"src/styles"
+							]
+						},
+						"scripts": [
 							"node_modules/marked/marked.min.js",
 							"node_modules/prismjs/prism.js",
 							"node_modules/prismjs/components/prism-git.min.js",
 							"node_modules/emoji-toolkit/lib/js/joypixels.min.js"
 						]
-                    },
-                    "configurations": {
-                        "production": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
-                                }
-                            ],
-                            "optimization": true,
-                            "outputHashing": "all",
-                            "sourceMap": false,
-                            "namedChunks": false,
-                            "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "2mb",
-                                    "maximumError": "5mb"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
-                                }
-                            ]
-                        },
+					},
+					"configurations": {
+						"production": {
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.prod.ts"
+								}
+							],
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"namedChunks": false,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "2mb",
+									"maximumError": "5mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "6kb",
+									"maximumError": "10kb"
+								}
+							]
+						},
 						"development": {
 							"optimization": false,
 							"outputHashing": "all",
@@ -84,130 +84,132 @@
 							"buildOptimizer": false,
 							"budgets": []
 						}
-                    },
+					},
 					"defaultConfiguration": "development"
-                },
-                "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
-                    "options": {
-                        "browserTarget": "portfolio:build"
-                    },
-                    "configurations": {
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "blog:build"
+					},
+					"configurations": {
 						"development": {
-							"browserTarget": "portfolio:build:development"
+							"browserTarget": "blog:build:development"
 						}
-                    },
+					},
 					"defaultConfiguration": "development"
-                },
-                "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
-                    "options": {
-                        "browserTarget": "portfolio:build"
-                    }
-                },
-                "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
-                    "options": {
-                        "main": "src/test.ts",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "tsconfig.spec.json",
-                        "karmaConfig": "karma.conf.js",
-                        "assets": [
-                            "src/favicon.ico",
-                            "src/assets"
-                        ],
-                        "styles": [
-                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "blog:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "src/test.ts",
+						"polyfills": "src/polyfills.ts",
+						"tsConfig": "tsconfig.spec.json",
+						"karmaConfig": "karma.conf.js",
+						"assets": [
+							"src/favicon.ico",
+							"src/assets"
+						],
+						"styles": [
+							"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
 							"src/styles/main.sass"
-                        ],
-                        "scripts": []
-                    }
-                },
-                "e2e": {
-                    "builder": "@angular-devkit/build-angular:protractor",
-                    "options": {
-                        "protractorConfig": "e2e/protractor.conf.js",
-                        "devServerTarget": "portfolio:serve"
-                    },
-                    "configurations": {
-                        "production": {
-                            "devServerTarget": "portfolio:serve:production"
-                        }
-                    }
-                },
-                "server": {
-                  "builder": "@angular-devkit/build-angular:server",
-                  "options": {
-                    "outputPath": "dist/portfolio/server",
-                    "main": "server.ts",
-                    "tsConfig": "tsconfig.server.json",
-                    "stylePreprocessorOptions": {
-                      "includePaths": [
-                        "src/styles"
-                      ]
-                    }
-                  },
-                  "configurations": {
-                    "production": {
-                      "outputHashing": "media",
-                      "fileReplacements": [
-                        {
-                          "replace": "src/environments/environment.ts",
-                          "with": "src/environments/environment.prod.ts"
-                        }
-                      ],
-                      "optimization": true,
-                      "sourceMap": false,
-                      "extractLicenses": true,
-                      "vendorChunk": false
-                    },
-                    "development": {
-                      "outputHashing": "media",
-                      "optimization": false,
-                      "sourceMap": true,
-                      "extractLicenses": true,
-                      "vendorChunk": true
-                    }
-                  },
-                  "defaultConfiguration": "production"
-                },
-                "serve-ssr": {
-                  "builder": "@nguniversal/builders:ssr-dev-server",
-                  "configurations": {
-                    "development": {
-                      "browserTarget": "portfolio:build:development",
-                      "serverTarget": "portfolio:server:development"
-                    },
-                    "production": {
-                      "browserTarget": "portfolio:build:production",
-                      "serverTarget": "portfolio:server:production"
-                    }
-                  },
-                  "defaultConfiguration": "development"
-                },
-                "prerender": {
-                  "builder": "@nguniversal/builders:prerender",
-                  "options": {
-                    "routes": [
-                      "/"
-                    ]
-                  },
-                  "configurations": {
-                    "production": {
-                      "browserTarget": "portfolio:build:production",
-                      "serverTarget": "portfolio:server:production"
-                    },
-                    "development": {
-                      "browserTarget": "portfolio:build:development",
-                      "serverTarget": "portfolio:server:development"
-                    }
-                  },
-                  "defaultConfiguration": "production"
-                }
-            }
+						],
+						"scripts": []
+					}
+				},
+				"e2e": {
+					"builder": "@angular-devkit/build-angular:protractor",
+					"options": {
+						"protractorConfig": "e2e/protractor.conf.js",
+						"devServerTarget": "blog:serve"
+					},
+					"configurations": {
+						"production": {
+							"devServerTarget": "blog:serve:production"
+						}
+					}
+				},
+				"server": {
+					"builder": "@angular-devkit/build-angular:server",
+					"options": {
+						"outputPath": "dist/blog/server",
+						"main": "server.ts",
+						"tsConfig": "tsconfig.server.json",
+						"stylePreprocessorOptions": {
+							"includePaths": [
+								"src/styles"
+							]
+						}
+					},
+					"configurations": {
+						"production": {
+							"outputHashing": "media",
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.prod.ts"
+								}
+							],
+							"optimization": true,
+							"sourceMap": false,
+							"extractLicenses": true,
+							"vendorChunk": false
+						},
+						"development": {
+							"outputHashing": "media",
+							"optimization": false,
+							"sourceMap": true,
+							"extractLicenses": true,
+							"vendorChunk": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve-ssr": {
+					"builder": "@nguniversal/builders:ssr-dev-server",
+					"configurations": {
+						"development": {
+							"browserTarget": "blog:build:development",
+							"serverTarget": "blog:server:development"
+						},
+						"production": {
+							"browserTarget": "blog:build:production",
+							"serverTarget": "blog:server:production"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"prerender": {
+					"builder": "@nguniversal/builders:prerender",
+					"options": {
+						"routes": [
+							"/blog",
+							"/blog/git-bisect",
+							"/blog/jwt"
+						]
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "blog:build:production",
+							"serverTarget": "blog:server:production"
+						},
+						"development": {
+							"browserTarget": "blog:build:development",
+							"serverTarget": "blog:server:development"
+						}
+					},
+					"defaultConfiguration": "production"
+				}
+			}
 		}
-  },
+	},
 	"cli": {
-	"analytics": "a8b4a1c6-ab9c-4c34-bea2-ba70c29b910f"
+		"analytics": "a8b4a1c6-ab9c-4c34-bea2-ba70c29b910f"
 	}
 }

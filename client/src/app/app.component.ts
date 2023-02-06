@@ -1,5 +1,5 @@
 import {
-	ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding
+	ChangeDetectionStrategy, Component, HostBinding
 } from '@angular/core';
 import { NavService } from './services/nav.service';
 import { Constants } from './utils/constants';
@@ -23,14 +23,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
 	])]
 })
 export class AppComponent {
-	title = 'portfolio';
+	title = 'blog';
 
 	@HostBinding(`style.${Constants.PROPERTY.BACKGROUND_IMAGE}`) backgroundImage: string;
 	@HostBinding(`style.${Constants.PROPERTY.COLOR}`) color: string;
 
 	palette: Palette;
 
-	constructor(private navService: NavService, private aestheticsService: AestheticsService, private cdRef: ChangeDetectorRef) {
+	constructor(private navService: NavService, private aestheticsService: AestheticsService) {
 		this.aestheticsService.palette$.subscribe(palette => {
 			this.palette = palette;
 			this.backgroundImage = palette.buildBackgroundImage();

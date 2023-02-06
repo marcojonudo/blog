@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnD
 import { Observable, Subscription } from 'rxjs';
 import { BlogService } from '../../../services/blog.service';
 import { Post } from '../../../objects/blog/post';
-import { delay, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Dayjs } from 'dayjs';
 import { Constants } from '../../../utils/constants';
 import { AestheticsService } from '../../../services/aesthetics.service';
 import { Comment } from '../../../objects/blog/comment';
-import { Meta } from '@angular/platform-browser';
 import { NavService } from '../../../services/nav.service';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { MetaService } from '../../../services/meta.service';
 
 @Component({
 	selector: 'app-post',
@@ -44,7 +44,6 @@ export class PostComponent implements OnInit, OnDestroy {
 
 	post: Post;
 	post$: Observable<Post>;
-	post2$: Observable<any>;
 	showSpinner = true;
 	paletteSubscription: Subscription;
 	parents: Comment[];
@@ -56,13 +55,12 @@ export class PostComponent implements OnInit, OnDestroy {
 		public aestheticsService: AestheticsService,
 		private navService: NavService,
 		private router: Router,
-		private meta: Meta,
+		private metaService: MetaService,
 		private cdRef: ChangeDetectorRef
 	) {
 		this.showSpinner = true;
 		this.blogService.post$.pipe(
 			tap(post => this.post = post),
-			delay(1000),
 			tap(() => this.showSpinner = false),
 			tap(() => this.cdRef.detectChanges())
 		).subscribe();

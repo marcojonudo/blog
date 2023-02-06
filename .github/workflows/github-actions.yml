@@ -46,4 +46,4 @@ jobs:
               with:
                 context: ./server
                 push: true
-                tags: marcojonudo/portfolio:latest
+                tags: marcojonudo/blog:latest

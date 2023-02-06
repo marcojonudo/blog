@@ -6,12 +6,31 @@ import { AestheticsService } from '../../../services/aesthetics.service';
 import { Palette } from '../../../objects/palette/palette';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
 	selector: 'app-blog',
 	templateUrl: './blog.component.html',
 	styleUrls: ['./blog.component.sass'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [
+		trigger('inOutAnimation', [
+			transition(
+				':enter',
+				[
+					style({ opacity: 0 }),
+					animate('.1s', style({ opacity: 1 }))
+				]
+			),
+			transition(
+				':leave',
+				[
+					style({ opacity: 1 }),
+					animate('.5s', style({ opacity: 0 }))
+				]
+			)
+		])
+	]
 })
 export class BlogComponent {
 

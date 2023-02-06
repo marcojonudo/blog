@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../objects/blog/post';
 import { Observable, Subject, of } from 'rxjs';
-import { concatMap, filter, map, tap } from 'rxjs/operators';
+import { concatMap, map, tap } from 'rxjs/operators';
 import { Url } from '../utils/url';
 import { Comment } from '../objects/blog/comment';
 import { Utils } from '../utils/utils';
 import { MetaService } from './meta.service';
 import { Title } from '@angular/platform-browser';
 import { Constants } from '../utils/constants';
+import * as dayjs from 'dayjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,6 +18,7 @@ export class BlogService {
 
 	comments: Comment[];
 	posts$: Observable<Post[]>;
+	posts: Post[];
 	isPost$: Observable<boolean>;
 	post$: Observable<Post>;
 	commentsSubject: Subject<Comment>;
@@ -25,7 +27,8 @@ export class BlogService {
 	constructor(
 		private http: HttpClient,
 		private titleService: Title,
-		private metaService: MetaService
+		private metaService: MetaService,
+		@Inject(PLATFORM_ID) private platformId: string
 	) {
 		this.createPostsObservable();
 		this.commentsSubject = new Subject<Comment>();
@@ -44,9 +47,7 @@ export class BlogService {
 
 	createPostObservable(path$: Observable<string>): void {
 		this.post$ = path$.pipe(
-			filter(path => !(this.checkIsBlog(path))),
 			concatMap((path: string) => this.findPost(path)),
-			map((post: any) => new Post(post)),
 			tap(post => this.findUpdateMetaObservable(post).subscribe())
 		);
 	}
@@ -55,7 +56,7 @@ export class BlogService {
 		this.posts$ = this.http.get(Url.posts()).pipe(
 			map((posts: any[]) => posts.map(post => new Post(post))),
 			map((posts: Post[]) => Utils.sortPosts(posts)),
-			tap(posts => console.log('Posts', posts))
+			tap(posts => this.posts = posts)
 		);
 	}
 
@@ -68,9 +69,10 @@ export class BlogService {
 	}
 
 	findPost(path: string): Observable<Post> {
+		const now = dayjs();
 		return this.http.get(Url.post(path)).pipe(
-			map(post => new Post(post)),
-			tap(post => console.log('Post', post))
+			tap(() => console.log(dayjs().diff(now))),
+			map(post => new Post(post))
 		);
 	}
 
@@ -78,7 +80,6 @@ export class BlogService {
 		return this.http.get(Url.getComments(postPath)).pipe(
 			tap(comments => {
 				this.comments = comments.map(c => new Comment(c));
-				console.log('Comments', this.comments);
 			})
 		);
 	}
