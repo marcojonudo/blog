@@ -69,9 +69,7 @@ export class BlogService {
 	}
 
 	findPost(path: string): Observable<Post> {
-		const now = dayjs();
 		return this.http.get(Url.post(path)).pipe(
-			tap(() => console.log(dayjs().diff(now))),
 			map(post => new Post(post))
 		);
 	}
