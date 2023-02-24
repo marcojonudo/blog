@@ -18,7 +18,7 @@
 		<div id="post-navigation">
 			<div class="button" (click)="navigateTo(blogUrl)">Blog</div>
 			<mat-icon>chevron_right</mat-icon>
-			<markdown *ngIf="blogService.post$ | async as post" id="post-title" [data]="post.title"></markdown>
+			<markdown *ngIf="post" id="post-title" [data]="post.title"></markdown>
 		</div>
 		<mat-form-field
 			id="filter"

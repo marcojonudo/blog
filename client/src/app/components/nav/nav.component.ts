@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NavService } from '../../services/nav.service';
 import { BlogService } from '../../services/blog.service';
 import { Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Palette } from '../../objects/palette/palette';
 import { UntypedFormControl } from '@angular/forms';
 import { startWith } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Post } from '../../objects/blog/post';
 
 @Component({
 	selector: 'app-nav',
@@ -38,18 +40,24 @@ export class NavComponent {
 	@Input() palette: Palette;
 
 	filterTextControl: UntypedFormControl;
+	post: Post;
 
 	constructor(
 		public navService: NavService,
 		public blogService: BlogService,
 		private aestheticsService: AestheticsService,
-		private router: Router
+		private router: Router,
+		private cdRef: ChangeDetectorRef
 	) {
 		this.filterTextControl = new UntypedFormControl('');
 		this.navService.searchInput$ = this.filterTextControl.valueChanges.pipe(
 			startWith('')
 		);
 		this.navService.createNavEventsObservable(this.router.events, router);
+		this.blogService.post$.pipe(
+			tap(post => this.post = post),
+			tap(() => this.cdRef.detectChanges())
+		).subscribe();
 	}
 
 	// region Getters / setters
