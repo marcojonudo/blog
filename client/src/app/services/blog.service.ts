@@ -2,14 +2,14 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../objects/blog/post';
 import { Observable, Subject, of } from 'rxjs';
-import { concatMap, map, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, tap } from 'rxjs/operators';
 import { Url } from '../utils/url';
 import { Comment } from '../objects/blog/comment';
 import { Utils } from '../utils/utils';
 import { MetaService } from './meta.service';
 import { Title } from '@angular/platform-browser';
 import { Constants } from '../utils/constants';
-import * as dayjs from 'dayjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -30,7 +30,7 @@ export class BlogService {
 		private metaService: MetaService,
 		@Inject(PLATFORM_ID) private platformId: string
 	) {
-		this.createPostsObservable();
+		// this.createPostsObservable();
 		this.commentsSubject = new Subject<Comment>();
 		this.comments$ = this.commentsSubject.asObservable();
 	}
@@ -40,24 +40,32 @@ export class BlogService {
 	}
 
 	createIsPostObservable(path$: Observable<string>): void {
-		this.isPost$ = path$.pipe(
-			map(path => !(this.checkIsBlog(path)))
-		);
+		this.isPost$ = of(true); // path$.pipe(
+			// map(path => !(this.checkIsBlog(path)))
+		// );
 	}
 
 	createPostObservable(path$: Observable<string>): void {
 		this.post$ = path$.pipe(
-			concatMap((path: string) => this.findPost(path)),
+			filter(path => !this.checkIsBlog(path)),
+			concatMap(path => this.findPost(path)),
 			tap(post => this.findUpdateMetaObservable(post).subscribe())
 		);
 	}
 
-	createPostsObservable(): void {
-		this.posts$ = this.http.get(Url.posts()).pipe(
-			map((posts: any[]) => posts.map(post => new Post(post))),
-			map((posts: Post[]) => Utils.sortPosts(posts)),
-			tap(posts => this.posts = posts)
+	createPostsObservable(path$: Observable<string>, root: ActivatedRoute): void {
+		this.posts$ = of('hola').pipe(
+			tap(path => console.log('po', path)),
+			filter(path => this.checkIsBlog(path)),
+			concatMap(() => this.findPosts()),
+			tap(() => this.findUpdateBlogMetaObservable(root).subscribe())
 		);
+		// this.posts$ = this.http.get(Url.posts()).pipe(
+		// 	tap((posts: any[]) => console.log('received posts')),
+		// 	map((posts: any[]) => posts.map(post => new Post(post))),
+		// 	map((posts: Post[]) => Utils.sortPosts(posts)),
+		// 	tap(posts => this.posts = posts)
+		// );
 	}
 
 	findUpdateMetaObservable(post: Post): Observable<any> {
@@ -68,9 +76,36 @@ export class BlogService {
 		);
 	}
 
+	findUpdateBlogMetaObservable(root: ActivatedRoute): Observable<any> {
+		return of(root).pipe(
+			// map(r => this.findRouteChild(r)),
+			tap(r => this.titleService.setTitle(r.snapshot.data.title)),
+			map(r => this.metaService.findBlogProperties(r.snapshot.data)),
+			tap(d => this.metaService.addTags(d))
+		);
+	}
+
+	// findRouteChild(activatedRoute: ActivatedRoute) {
+	// 	return activatedRoute.firstChild ? this.findRouteChild(activatedRoute.firstChild) : activatedRoute;
+	// }
+
 	findPost(path: string): Observable<Post> {
 		return this.http.get(Url.post(path)).pipe(
-			map(post => new Post(post))
+			map(post => new Post(post)),
+			catchError(e => {
+				console.log('errorazo', e);
+				return of(e);
+			})
+		);
+	}
+
+	findPosts(): Observable<Post[]> {
+		console.log(2222);
+		return this.http.get(Url.posts()).pipe(
+			tap(() => console.log('received posts')),
+			map((posts: any[]) => posts.map(post => new Post(post))),
+			map((posts: Post[]) => Utils.sortPosts(posts)),
+			tap(posts => this.posts = posts)
 		);
 	}
 

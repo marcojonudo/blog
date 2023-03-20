@@ -4,8 +4,8 @@ services:
     blog-db:
         image: mongo
         restart: unless-stopped
-        volumes:
-            - /data/blog:/data/db
+#        volumes:
+#            - /data/blog:/data/db
         ports:
             - 27017:27017
         environment:
@@ -19,12 +19,13 @@ services:
     blog-api:
         image: marcojonudo/blog-api
         restart: unless-stopped
-#        ports:
-#            - 8090:8090
+        ports:
+            - 8095:8090
         environment:
             DB_USER: marco
             DB_PASS: icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC
-            DB_IP: blog-db
+            DB_IP: 217.71.207.101
+            # DB_IP: blog-db
         networks:
             - blog-net
         depends_on:

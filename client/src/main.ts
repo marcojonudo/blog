@@ -7,16 +7,17 @@ import { environment } from './environments/environment';
 if (environment.production) {
 	enableProdMode();
 }
-
+console.log(1);
 function bootstrap() {
-     platformBrowserDynamic().bootstrapModule(AppModule)
-	.catch(err => console.error(err));
-   };
+	platformBrowserDynamic().bootstrapModule(AppModule)
+		.catch(err => console.error(err));
+}
 
-
- if (document.readyState === 'complete') {
-   bootstrap();
- } else {
-   document.addEventListener('DOMContentLoaded', bootstrap);
- }
- 
+console.log(2);
+if (document.readyState === 'complete') {
+	console.log(3);
+	bootstrap();
+} else {
+	console.log(4);
+	document.addEventListener('DOMContentLoaded', bootstrap);
+}

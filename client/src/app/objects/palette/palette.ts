@@ -36,7 +36,7 @@ export class Palette {
 		};
 	}
 
-	buildTextBlockStyles(dark: boolean = false): any {
+	buildTextBlockStyles(): any {
 		return {
 			'background-color': this.textBackgroundColor,
 			color: this.color,

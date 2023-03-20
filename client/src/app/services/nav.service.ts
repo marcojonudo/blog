@@ -23,13 +23,16 @@ export class NavService {
 	createNavEventsObservable(events: Observable<any>, router: Router): void {
 		this.path$ = events.pipe(
 			filter(e => e instanceof NavigationEnd),
+			tap(e => console.log('event', e)),
 			map(e => e.urlAfterRedirects),
 			map(url => url.split('/')),
 			map(paths => paths[paths.length - 1]),
-			tap(p => p === 'blog' ? this.handleBlogUpdate(router).subscribe() : undefined)
+			tap(url => console.log('path$ final path', url))
+			// tap(p => p === 'blog' ? this.handleBlogUpdate(router).subscribe() : undefined)
 		);
-		this.blogService.createIsPostObservable(this.path$);
+		// this.blogService.createIsPostObservable(this.path$);
 		this.blogService.createPostObservable(this.path$);
+		// this.blogService.createPostsObservable(this.path$, this.findRouteChild(router.routerState.root));
 	}
 
 	handleBlogUpdate(router: Router): Observable<any> {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavService } from '../../../services/nav.service';
 import { Post } from '../../../objects/blog/post';
 import { BlogService } from '../../../services/blog.service';
@@ -49,6 +49,7 @@ export class BlogComponent {
 	}
 
 	findPostsObservable(filterText: string, localPosts: Post[] = this.posts): Observable<Post[]> {
+		console.log('jo', localPosts);
 		return (localPosts ? of(localPosts) : this.blogService.posts$).pipe(
 			tap(posts => this.posts = this.posts ?? posts),
 			map(posts => posts.filter(p => p.title.toLowerCase().includes(filterText.toLowerCase())))

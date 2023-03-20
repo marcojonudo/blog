@@ -33,6 +33,7 @@ export class TransferHttpInterceptor implements HttpInterceptor {
 
 	handleBrowserRequest(req: HttpRequest<any>, key: StateKey<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const cachedResponse = this.transferState.get(key, undefined);
+		console.log('handle browser request', cachedResponse);
 		if (cachedResponse) {
 			this.transferState.remove(key);
 			return of(new HttpResponse({
@@ -44,12 +45,16 @@ export class TransferHttpInterceptor implements HttpInterceptor {
 	}
 
 	handleServerRequest(req: HttpRequest<any>, key: StateKey<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		console.log('handle server request', `http://blog-api:8090${req.url}`);
 		return of(req).pipe(
 			map(r => this.isCompleteUrl(r.url) ? r : r.clone({ url: `http://blog-api:8090${r.url}` })),
 			concatMap(r => next.handle(r)),
 			filter(event => event instanceof HttpResponse),
 			filter((response: HttpResponse<any>) => response.status === 200),
-			tap((response: HttpResponse<any>) => this.transferState.set(key, response.body))
+			tap((response: HttpResponse<any>) => {
+				console.log('setting transfer state');
+				this.transferState.set(key, response.body);
+			})
 		);
 	}
 

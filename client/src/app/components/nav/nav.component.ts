@@ -54,10 +54,10 @@ export class NavComponent {
 			startWith('')
 		);
 		this.navService.createNavEventsObservable(this.router.events, router);
-		this.blogService.post$.pipe(
-			tap(post => this.post = post),
-			tap(() => this.cdRef.detectChanges())
-		).subscribe();
+		// this.blogService.post$.pipe(
+		// 	tap(post => this.post = post),
+		// 	tap(() => this.cdRef.detectChanges())
+		// ).subscribe();
 	}
 
 	// region Getters / setters

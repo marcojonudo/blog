@@ -40,8 +40,8 @@ db:
     port: ${DB_PORT:27017}
     url: ${DB_IP:localhost}:${db.port}
     credentials:
-        username: ${DB_USER:root}
-        password: ${DB_PASS:root}
+        username: ${DB_USER:marco}
+        password: ${DB_PASS:icjSnpQ5Gj7VWdbuxWWkUy2qmNAuU7xC}
     config:
         post:
             name: blog
